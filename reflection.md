@@ -31,7 +31,9 @@ Document at least 3 bugs you found. Add rows as needed.
 - Give one example of an AI suggestion that was correct (including what the AI suggested and how you verified the result).
 - Give one example of an AI suggestion that was incorrect or misleading (including what the AI suggested and how you verified the result).
 
-  Claude
+Correct AI Suggestion: The AI identified that the `check_guess()` function tells player wrong direction. message says "Go HIGHER" but outcome is "Too High". The suggestion was correct. I verified it by playing the game testing several guesses against a known secret value. After confirming the issue, I updated the logic and confirmed that the hints matched the expected behavior.
+
+Misleading AI Suggestion: The AI assumed that the scoring system needed a minimum score floor of 10 to prevent negative values. The suggestion was misleading. After reviewing the game's attempt limit (8 attempts maximum), I verified that the score already ranged from 10 to 80 and could never become negative. Therefore, this suggestion was not applicable to the actual game logic.
 
 ---
 
@@ -42,11 +44,20 @@ Document at least 3 bugs you found. Add rows as needed.
   and what it showed you about your code.
 - Did AI help you design or understand any tests? How?
 
+I considered a bug fixed when the code behavior matched the intended game rules and the incorrect behavior could no longer be reproduced.
+
+One manual test I ran was entering several decimal values such as "5.1". Before the fix, the game accepted and converted it to an integer. After the fix, the game correctly rejected the input and displayed an error message. 
+I also used pytest to test my fixes. I listed the bugs I fixed and asked AI to generate test cases for test_game_logic.py. I then ran the tests and verified that the fixes worked as intended.
+
 ---
 
 ## 4. What did you learn about Streamlit and state?
 
 - How would you explain Streamlit "reruns" and session state to a friend who has never used Streamlit?
+
+Streamlit is like a printer. Every time it reruns, it will stop from where it is, and "print" the script from the beginning to the end of the script. Besides rerun(), every interaction will trigger rerun automatically for example clicking a button, typing in a box. Thus we should be very careful about the position of the display blocks and variable mutations in the script. Value changed after the display blocks may not be reflected immediately.
+
+Because Streamlit reruns the script many times, it needs a place to remember important information. That place is called session state. You can think of it as a dictionary that stores data in the background and is not affected by reruns. This allows the app to remember things like difficulty, attempts, and game history even when the page reruns.
   
 ---
 
@@ -56,3 +67,10 @@ Document at least 3 bugs you found. Add rows as needed.
   - This could be a testing habit, a prompting strategy, or a way you used Git.
 - What is one thing you would do differently next time you work with AI on a coding task?
 - In one or two sentences, describe how this project changed the way you think about AI generated code.
+
+One habit I want to reuse is understanding the overall code structure before debugging. During this project, taking time to understand how different parts of the program worked together helped me trace bugs more effectively and identify their root causes.
+
+Next time I would discussing one bug at a time with AI. When I focused on a single issue, the explanations were clearer and it was easier to verify the suggested fixes.
+
+Before this project, I mainly used AI as a chatbot. I was surprised to learn that it could analyze multiple files, help debug code, and generate tests more like a coding agent than a simple conversation tool.
+
