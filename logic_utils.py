@@ -8,7 +8,6 @@ def get_range_for_difficulty(difficulty: str):
     if difficulty == "Hard":
         return 1, 50
     return 1, 100
-    # raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
 
 # FIX: AI helped identify that decimal inputs were being truncated to integers. I implemented the validation and verified it with regression tests.
 def parse_guess(raw: str):
@@ -24,7 +23,6 @@ def parse_guess(raw: str):
         return False, None, "Enter a guess."
 
     try:
-        # Should not accepts decimal inputs by truncating them to integers.
         if "." in raw:
             value = int(float(raw))
             return False, None, "That is not a integer."
@@ -34,9 +32,7 @@ def parse_guess(raw: str):
         return False, None, "That is not a number."
 
     return True, value, None
-    # raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
 
-# FIXED: No exception handling is needed here because input validation is performed before this function is called.
 # FIX: AI helped identify that the hint directions were reversed. I corrected the comparison logic and verified the behavior with pytest.
 def check_guess(guess, secret):
     """
@@ -48,16 +44,12 @@ def check_guess(guess, secret):
         return "Win", "🎉 Correct!"
     
     if guess > secret:
-        # should return lower
         return "Too High", "📉 Go LOWER!"
     else:
         return "Too Low", "📈 Go HIGHER!"
 
-    # raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
-
-# FIXED: 1.Modified the scoring logic for cases: "Too High" on even attempt used to ADD 5 pts.
-# FIXED: 2.Removed unreachable minimum-score check. With a maximum of 8 attempts, the point already ranges from 80 to 10, so can never drop below 10.
-# FIX: AI helped review the scoring logic. I verified that "Too High" guesses should never increase the player's score.
+# FIX: AI-assisted review revealed that "Too High" guesses could incorrectly award points.
+# FIX: Manual analysis showed that the minimum-score safeguard was unreachable with an 8-attempt limit.
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
     if outcome == "Win":
@@ -71,4 +63,3 @@ def update_score(current_score: int, outcome: str, attempt_number: int):
         return current_score - 5
 
     return current_score
-    # raise NotImplementedError("Refactor this function from app.py into logic_utils.py")
