@@ -61,21 +61,27 @@ Describe your fixed game in numbered steps so a reader can follow along without 
 ## 🧪 Test Results
 
 ```
-collected 11 items                                                                                                                                      
+collected 17 items                                                                                   
 
-tests/test_game_logic.py::test_parse_guess_rejects_decimal PASSED                                                                                 [  9%]
-tests/test_game_logic.py::test_parse_guess_rejects_decimal_dot_zero PASSED                                                                        [ 18%]
-tests/test_game_logic.py::test_parse_guess_accepts_plain_integer PASSED                                                                           [ 27%]
-tests/test_game_logic.py::test_check_guess_high_gives_lower_hint PASSED                                                                           [ 36%]
-tests/test_game_logic.py::test_check_guess_low_gives_higher_hint PASSED                                                                           [ 45%]
-tests/test_game_logic.py::test_check_guess_exact_is_win PASSED                                                                                    [ 54%]
-tests/test_game_logic.py::test_update_score_too_high_even_attempt_subtracts PASSED                                                                [ 63%]
-tests/test_game_logic.py::test_update_score_too_high_odd_attempt_subtracts PASSED                                                                 [ 72%]
-tests/test_game_logic.py::test_update_score_win_attempt_1 PASSED                                                                                  [ 81%]
-tests/test_game_logic.py::test_update_score_win_attempt_8 PASSED                                                                                  [ 90%]
-tests/test_game_logic.py::test_update_score_win_never_below_10_within_limit PASSED                                                                [100%]
+tests/test_edge_cases.py::test_parse_guess_empty_string PASSED                                 [  5%]
+tests/test_edge_cases.py::test_parse_guess_decimal_whole_number PASSED                         [ 11%]
+tests/test_edge_cases.py::test_negative_guess_rejected_by_bounds PASSED                        [ 17%]
+tests/test_edge_cases.py::test_parse_guess_very_large_integer PASSED                           [ 23%]
+tests/test_edge_cases.py::test_parse_guess_double_minus PASSED                                 [ 29%]
+tests/test_edge_cases.py::test_parse_guess_plus_minus PASSED                                   [ 35%]
+tests/test_game_logic.py::test_parse_guess_rejects_decimal PASSED                              [ 41%]
+tests/test_game_logic.py::test_parse_guess_rejects_decimal_dot_zero PASSED                     [ 47%]
+tests/test_game_logic.py::test_parse_guess_accepts_plain_integer PASSED                        [ 52%]
+tests/test_game_logic.py::test_check_guess_high_gives_lower_hint PASSED                        [ 58%]
+tests/test_game_logic.py::test_check_guess_low_gives_higher_hint PASSED                        [ 64%]
+tests/test_game_logic.py::test_check_guess_exact_is_win PASSED                                 [ 70%]
+tests/test_game_logic.py::test_update_score_too_high_even_attempt_subtracts PASSED             [ 76%]
+tests/test_game_logic.py::test_update_score_too_high_odd_attempt_subtracts PASSED              [ 82%]
+tests/test_game_logic.py::test_update_score_win_attempt_1 PASSED                               [ 88%]
+tests/test_game_logic.py::test_update_score_win_attempt_8 PASSED                               [ 94%]
+tests/test_game_logic.py::test_update_score_win_never_below_10_within_limit PASSED             [100%]
 
-================================================================== 11 passed in 0.03s ==================================================================
+======================================== 17 passed in 0.03s =========================================
 ```
 
 ## 🚀 Stretch Features

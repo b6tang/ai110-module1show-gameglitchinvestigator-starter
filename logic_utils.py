@@ -23,11 +23,13 @@ def parse_guess(raw: str):
         return False, None, "Enter a guess."
 
     try:
-        if "." in raw:
-            value = int(float(raw))
-            return False, None, "That is not a integer."
+        stripped = raw.strip()
+        if "." in stripped:
+            # Reject whole-number decimals as integer (e.g., "1000.0", "1000.00")
+            value = int(float(stripped))
+            return False, None, "That is not an integer."
         else:
-            value = int(raw)
+            value = int(stripped) 
     except Exception:
         return False, None, "That is not a number."
 
@@ -53,7 +55,7 @@ def check_guess(guess, secret):
 def update_score(current_score: int, outcome: str, attempt_number: int):
     """Update score based on outcome and attempt number."""
     if outcome == "Win":
-        points = 100 - 10 * (attempt_number+1)
+        points = 100 - 10 * (attempt_number + 1)
         return current_score + points
 
     if outcome == "Too High":

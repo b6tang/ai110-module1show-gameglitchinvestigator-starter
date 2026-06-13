@@ -1,7 +1,7 @@
 import random
 import streamlit as st
 
-from logic_utils import parse_guess, check_guess, get_range_for_difficulty,update_score
+from logic_utils import parse_guess, check_guess, get_range_for_difficulty, update_score
 
 st.set_page_config(page_title="Glitchy Guesser", page_icon="🎮")
 
@@ -28,7 +28,7 @@ low, high = get_range_for_difficulty(difficulty)
 st.sidebar.caption(f"Range: {low} to {high}")
 st.sidebar.caption(f"Attempts allowed: {attempt_limit}")
 
-# FIXED: Once the difficulty changed, we should regenerate the Secret, reset the Attempt, claer History, Score
+# FIXED: Once the difficulty changed, we should regenerate the Secret, reset the Attempt, clear History, Score
 if "difficulty" not in st.session_state:
     st.session_state.difficulty = difficulty
 if difficulty != st.session_state.difficulty:
@@ -36,7 +36,7 @@ if difficulty != st.session_state.difficulty:
     st.session_state.secret = random.randint(low, high)
     st.session_state.history = []
     st.session_state.score = 0
-    st.session_state.difficulty = difficulty  # don't forget to update the last_difficulty
+    st.session_state.difficulty = difficulty
     st.rerun()
 
 if "secret" not in st.session_state:
@@ -84,29 +84,25 @@ if new_game:
     st.session_state.history = []
     st.session_state.status = "playing"
     st.rerun()
-
-if st.session_state.status != "playing":
-    info_placeholder.info(
     
-    # FIX: AI suggested updating the placeholder after state changes so the info panel refreshes immediately.
-    f"Guess a number between {low} and {high}. "
-    # FIXED: manual fix it to use actual range variables
-    f"Attempts left: {attempt_limit - st.session_state.attempts}"
-    )   
+    
+if st.session_state.status != "playing":
     if st.session_state.status == "won":
         st.success("You already won. Start a new game to play again.")
     else:
         st.error("Game over. Start a new game to try again.")
-    st.stop()
     
-if submit:    
+elif submit:    
     ok, guess_int, err = parse_guess(raw_guess)
 
     if not ok:
         st.session_state.history.append(raw_guess)
         st.error(err)
+    # add bounds check
+    elif guess_int < low or guess_int > high:
+        st.error(f"Guess must be between {low} and {high}.")
     else:
-        # FIX: Manually corrected the attempt-count logic so invalid inputs do not increase attempts.
+        # FIX: Manually corrected the attempt-count logic so invalid inputs do not increase attempts.        
         st.session_state.attempts += 1
         st.session_state.history.append(guess_int)
 
