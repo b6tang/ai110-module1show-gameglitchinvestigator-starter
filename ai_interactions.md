@@ -10,7 +10,7 @@
 
 **What task did you give the agent?**
 
-In claude: (attached `logic_utils.py` and `app.py`)"Review my number guessing game and identify 10 potential edge-case inputs that could cause incorrect behavior, crashes, or unexpected results. Is there more edge cases?"
+In claude agent: (attached `logic_utils.py` and `app.py`) Review my number guessing game and identify 10 potential edge-case inputs that could cause incorrect behavior, crashes, or unexpected results. Is there more edge cases?
 
 **What did the agent do?**
 
@@ -18,26 +18,19 @@ In claude: (attached `logic_utils.py` and `app.py`)"Review my number guessing ga
 
 1. Read both `logic_utils.py` and `app.py`.
 2. Traced the input-validation and guess-processing flow.
-3. Identified potential edge cases such as empty strings, whole-number decimal, scientific notation, negative numbers, and very large integers.
+3. Identified potential edge cases such as empty strings, whole-number decimal, scientific notation, Malformed signed number, and very large integers.
 4. Reviewed scoring logic and highlighted possible issues related to score calculation.
 5. Suggested which edge cases would be valuable candidates for additional pytest coverage.
 6. Provided explanations for why each edge case might cause unexpected behavior.
 
 
-1. Reviewed each reported issue to determine whether it was an actual bug or intended behavior.
-2. Traced the relevant code paths manually to confirm the agent's findings.
-3. Selected the most useful edge cases for testing.
-4. Verified the behavior of the application before deciding which changes or tests to add.
-
-
-
 **What did you have to verify or fix manually?**
 
-- I had to determine which of the agent's suggestions were actual input edge cases for the assignment. For example, inputs such as `""`, `"1e2"`, and `"99999999999999"` were relevant test cases, while score-calculation issues were not input edge cases.
+1. I had to determine which of the agent's suggestions were actual input edge cases for the assignment. For example, inputs such as `""`, `"1e2"`, and `"99999999999999"` were relevant test cases, while score-calculation issues were not input edge cases.
 
-- I had to verify the agent's analysis by tracing the code manually. For example, I confirmed that `"1e2"` reaches the exception-handling path and that `" 5 "` is accepted because the input is stripped before parsing.
+2. I had to verify the agent's analysis by tracing the code manually. For example, I confirmed that `"1e2"` reaches the exception-handling path and that `" 5 "` is accepted because the input is stripped before parsing.
 
-- I had to review the agent's recommendations and decide which findings were valid, which were design choices, and which should be covered by additional pytest tests.
+3. I had to review the agent's recommendations and decide which findings were valid, which were design choices, and which should be covered by additional pytest tests.
 
 ---
 
@@ -49,8 +42,7 @@ In claude: (attached `logic_utils.py` and `app.py`)"Review my number guessing ga
 |-----------|-------------|-------------------|--------------|----------------|
 |Empty string input ("")  |Review my game and suggest edge cases.| Empty string must be rejected with an error message| Yes| Users may click Submit without entering a value.|
 |whole-number decimal input ("5.0")|Same prompt as above | '5.0' contains '.', must be rejected even though it represents an integer.| Yes| The game should only accept integer guesses.|
-|Negative number ("-5") |Same prompt as above | the game should
-    then reject it because -5 falls below the minimum range.| Yes| The game should only accept positive integer guesses.|
+|Negative number ("-5") |Same prompt as above | the game should then reject it because -5 falls below the minimum range.| Yes| The game should only accept positive integer guesses.|
 |Malformed signed number ("--5" or "+-5")|Same prompt as above|'--5' is malformed; must be rejected as not a number.| Yes| Tests validation of malformed user input.|
 |Very large integer ("99999999999999")|Same prompt as above|'99999999999999' is a valid integer; parse_guess must accept it (bounds checked in app).| Yes| Tests extreme numeric input.|
 ---
@@ -92,16 +84,16 @@ logic_utils.py:58	nit	attempt_number+1 unexplained — add space: attempt_number
 **Changes applied:**
 
 app.py:
-Line 4: add space before update_score in import
-Line 31: fix typo claer → clear
-Line 39: remove inline comment # don't forget to update the last_difficulty
-Line 94: remove # st.stop() dead commented-out code
+- Line 4: add space before update_score in import
+- Line 31: fix typo claer → clear
+- Line 39: remove inline comment "# don't forget to update the last_difficulty"
+- Line 94: remove "# st.stop()" dead commented-out code
 
 logic_utils.py:
-Line 1: remove # There is no bug comment
-Line 28: "would not accept Whole-number decimals" → "rejects whole-number decimals"
-Line 30: "a integer" → "an integer"
-Line 58: attempt_number+1 → attempt_number + 1 (spacing)
+- Line 1: remove comment "There is no bug"
+- Line 28: "would not accept Whole-number decimals" → "rejects whole-number decimals"
+- Line 30: "a integer" → "an integer"
+- Line 58: attempt_number + 1 (add spacing for readability)
 
 ---
 
@@ -111,15 +103,16 @@ Line 58: attempt_number+1 → attempt_number + 1 (spacing)
 
 **Task given to both models:**
 
-<!-- Describe what you asked each model to do -->
+I asked both models to identify 10 potential edge-case inputs for a number guessing game that could cause incorrect behavior, crashes, or unexpected results, and to generate pytest tests based on 5 cases I choose.
+
 
 | | Model A | Model B |
 |-|---------|---------|
-| **Model name** | | |
-| **Response summary** | | |
-| **More Pythonic?** | | |
-| **Clearer explanation?** | | |
+| **Model name** | Claude Sonnet| Claude Haiku|
+| **Response summary** |Generated a comprehensive set of edge-case tests, including malformed numeric inputs such as "--5", and additionally identified potential issues in the code beyond the requirements.| Generated a focused list of 10 edge-case inputs aligned strictly with the prompt, with minimal additional reasoning. |
+| **More Pythonic?** | More structured, descriptive, but slightly more verbose| More concise and readable, but less explanation|
+| **Clearer explanation?** | Yes, includes reasoning and broader consideration of edge-case behavior| Yes, provides direct and minimal explanation |
 
 **Which did you prefer and why?**
 
-<!-- Your conclusion -->
+I think it depends on the task. Both models wrote similar pytest tests that cover the same input validation cases and are both correct. Claude Haiku's output was more concise and easier to read, which reduced cognitive load when reviewing the tests. For simpler or routine tasks, this level of output is often sufficient. However, for edge-case analysis and more complex reasoning, Claude Sonnet provided more comprehensive coverage and deeper consideration of potential issues.
